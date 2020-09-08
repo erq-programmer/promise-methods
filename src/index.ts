@@ -4,25 +4,19 @@ const promiseAll = (arrayOfPromise: Array<any>) => {
 
     if (arrayOfPromiseLength === 0) resolve([]);
 
-    let resolvedElements: Array<any> = new Array(arrayOfPromiseLength);
-    let resolvedCounter = 0;
+    let resolvedElements: Array<any> = [];
 
-    arrayOfPromise.forEach((element, index) => {
-      const allPromisesResolved = resolvedCounter === arrayOfPromise.length;
-      if (element instanceof Promise) {
-        element
-          .then((data) => {
-            resolvedElements[index] = data;
-            resolvedCounter += 1;
-            if (allPromisesResolved) resolve(resolvedElements);
-          })
-          .catch((error) => reject(new Error('error')));
-      } else {
-        resolvedElements[index] = element;
-        resolvedCounter += 1;
-        if (allPromisesResolved) resolve(resolvedElements);
-      }
+    arrayOfPromise.forEach((element) => {
+      const promisedElement = Promise.resolve(element);
+
+      promisedElement
+        .then((response) => {
+          resolvedElements.push(response);
+        })
+        .catch((error) => reject(new Error(error)));
     });
+
+    resolve(resolvedElements);
   });
 };
 
@@ -32,6 +26,6 @@ const promise3 = new Promise((resolve, reject) => {
   setTimeout(resolve, 100, 'foo');
 });
 
-promiseAll([promise1, promise2, promise3]).then((values) => {
+Promise.all([promise1, promise2, promise3]).then((values) => {
   console.log(values);
 });
