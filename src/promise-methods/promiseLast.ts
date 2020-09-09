@@ -11,10 +11,10 @@ const promiseLast = <T>(arrayOfPromise: Array<T>) => {
 
       promisedElement
         .then((response) => {
+          i++;
           if (i === arrayOfPromiseLength) {
             resolve(response);
           }
-          i++;
         })
         .catch((error) => reject(new Error(error)));
     });

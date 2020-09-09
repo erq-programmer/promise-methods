@@ -1,11 +1,14 @@
 import promiseAll from '../promise-methods/promiseAll';
-import pormiseLast from '../promise-methods/promiseLast';
+import promiseLast from '../promise-methods/promiseLast';
 
 describe('promiseAll method', () => {
   const promise1 = Promise.resolve(3);
   const promise2 = 42;
   const promise3 = new Promise((resolve, reject) => {
     setTimeout(resolve, 100, 'foo');
+  });
+  const promise4 = new Promise((resolve, reject) => {
+    setTimeout(resolve, 500, 'bar');
   });
   const promiseError = Promise.reject('Reject');
 
@@ -23,11 +26,13 @@ describe('promiseAll method', () => {
     expect([promiseLength].length).toEqual(1);
   });
 
-  // test('example promises should return array with resolves', async () => {
-  //   // expect.assertions(1);
-  //   const p = await promiseAll([promise1, promise2, promise3]).then(
-  //     (val) => val
-  //   );
-  //   expect(p).toEqual([3, 1337, 'foo']);
-  // });
+  test('should return bar', () => {
+    promiseLast([promise1, promise2, promise3, promise4]).then((values) => {
+      expect(values).toEqual('bar');
+    });
+  });
 });
+
+// new Promise((resolve, reject) => {
+//   reject(new Error("Whoops!"));
+// }).catch(alert); // Error: Whoops!
