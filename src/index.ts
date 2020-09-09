@@ -24,14 +24,14 @@ const promiseAll = <T>(arrayOfPromise: Array<T>) => {
 };
 
 /********************** promises example **********************/
-const promise1 = Promise.resolve(3);
-const promise2 = 42;
-const promise3 = new Promise((resolve, reject) => {
-  setTimeout(resolve, 100, 'foo');
-});
+// const promise1 = Promise.resolve(3);
+// const promise2 = 42;
+// const promise3 = new Promise((resolve, reject) => {
+//   setTimeout(resolve, 100, 'foo');
+// });
 
-promiseAll([promise1, promise2, promise3]).then((values) => {
-  console.log(values);
-});
+// promiseAll([promise1, promise2, promise3]).then((values) => {
+//   console.log(values);
+// });
 
 export default promiseAll;

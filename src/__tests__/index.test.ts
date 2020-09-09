@@ -1,4 +1,6 @@
 import promiseAll from '../index';
+import { isObject } from 'util';
+import { promises } from 'dns';
 
 describe('promiseAll method', () => {
   const promise1 = Promise.resolve(3);
@@ -6,10 +8,17 @@ describe('promiseAll method', () => {
   const promise3 = new Promise((resolve, reject) => {
     setTimeout(resolve, 100, 'foo');
   });
-  it('It should return expected data', () => {});
+  const promiseError = Promise.reject('Reject');
 
-  it('tests error with promises', () => {
-    expect.assertions(1);
-    return promiseAll[2].catch((e) => expect(e).toEqual(2));
+  it('should be promise', () => {
+    const p = promiseAll([promise1, promise2, promise3]);
+    expect(p).toBeInstanceOf(Promise);
+  });
+
+  it('array of promises should return one promise', () => {
+    const promiseLength = promiseAll([promise1, promise2, promise3]).then((value) => {
+      return value;
+    });
+    expect([promiseLength].length).toEqual(1);
   });
 });
