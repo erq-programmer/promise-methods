@@ -12,26 +12,26 @@
 // zwracane są tylko te wyniki promise, które zakończyły się sukcesem, błędy są ignorowane
 
 // skopiuj identyczne działanie tych metod w funkcjach
-// const promiseAll = (arrayOfPromise) => {
-//   return new Promise((resolve, reject) => {
-//     // ...
-//   });
-// };
+const promiseAll = (arrayOfPromise) => {
+  return new Promise((resolve, reject) => {
+    // ...
+  });
+};
 
-// const promiseRace = (arrayOfPromise) => {
-//   return new Promise((resolve, reject) => {
-//     // ...
-//   });
-// };
+const promiseRace = (arrayOfPromise) => {
+  return new Promise((resolve, reject) => {
+    // ...
+  });
+};
 
-// const promiseLast = (arrayOfPromise) => {
-//   return new Promise((resolve, reject) => {
-//     // ...
-//   });
-// };
+const promiseLast = (arrayOfPromise) => {
+  return new Promise((resolve, reject) => {
+    // ...
+  });
+};
 
-// const promiseIgnoreErrors = (arrayOfPromise) => {
-//   return new Promise((resolve, reject) => {
-//     // ...
-//   });
-// };
+const promiseIgnoreErrors = (arrayOfPromise) => {
+  return new Promise((resolve, reject) => {
+    // ...
+  });
+};
