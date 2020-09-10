@@ -49,6 +49,8 @@ describe('Testing promiseAll function', () => {
     ]).catch((error) => expect(error).toMatch('Promise reject'));
   });
 
+  // dodać test że nie ważne co podamy do promiseAll stanie się promisą
+
   // it('should throw error when we pass bad type of props', () => {
   //   expect.assertions(1);
   //   const expectedResponse: any[] = [];

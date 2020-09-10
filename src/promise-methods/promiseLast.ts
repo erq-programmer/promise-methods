@@ -1,9 +1,5 @@
 const promiseLast = <T>(arrayOfPromise: Array<T>) => {
-  if (!(arrayOfPromise instanceof Array))
-    throw new Error('Function parameter must be array');
-
   let counter = 0;
-  let finalResolvedElement;
   const arrayOfPromiseLength: number = arrayOfPromise.length;
 
   return new Promise((resolve, reject) => {
@@ -13,10 +9,8 @@ const promiseLast = <T>(arrayOfPromise: Array<T>) => {
       try {
         const resolvedElement = await Promise.resolve(element);
         counter++;
-        finalResolvedElement = resolvedElement;
-
         if (counter === arrayOfPromiseLength) {
-          resolve(finalResolvedElement);
+          resolve(resolvedElement);
         }
       } catch (err) {
         reject(err);

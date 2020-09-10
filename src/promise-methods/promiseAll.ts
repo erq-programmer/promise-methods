@@ -1,7 +1,4 @@
 const promiseAll = <T>(arrayOfPromise: Array<T>) => {
-  if (!(arrayOfPromise instanceof Array))
-    throw new Error('Function parameter must be array');
-
   const resolvedElements: Array<T> = [];
   const arrayOfPromiseLength: number = arrayOfPromise.length;
   let idxCounter = 0;

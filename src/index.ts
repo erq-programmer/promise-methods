@@ -10,14 +10,7 @@ const promise3 = new Promise((resolve, reject) => {
 const promise4 = new Promise((resolve, reject) => {
   setTimeout(resolve, 500, 'bar');
 });
-const promise5 = new Promise((resolve, reject) => {
-  setTimeout(reject, 500, 'errorval');
-});
 
-const p = new Promise((resolve, reject) => {
-  reject(new Error('Oops!'));
-});
-
-promiseAll([promise1, promise2, promise3, promise4, p]).then((values) => {
+promiseAll([promise1, promise2, promise3, promise4]).then((values) => {
   console.log(values);
 });
