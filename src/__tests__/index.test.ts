@@ -1,38 +1,85 @@
 import promiseAll from '../promise-methods/promiseAll';
 import promiseLast from '../promise-methods/promiseLast';
 
-describe('promiseAll method', () => {
-  const promise1 = Promise.resolve(3);
-  const promise2 = 42;
-  const promise3 = new Promise((resolve, reject) => {
-    setTimeout(resolve, 100, 'foo');
-  });
-  const promise4 = new Promise((resolve, reject) => {
-    setTimeout(resolve, 500, 'bar');
-  });
-  const promiseError = Promise.reject('Reject');
+const mockedSuccessPromise1 = Promise.resolve(3);
+const mockedSuccessPromise2 = 42;
+const mockedSuccessPromise3 = new Promise((resolve, reject) => {
+  setTimeout(resolve, 100, 'foo');
+});
+const mockedFailPromise = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    reject('Promise reject');
+  }, 100);
+});
+const mockedArrayOfSuccessPromises = [
+  mockedSuccessPromise1,
+  mockedSuccessPromise2,
+  mockedSuccessPromise3,
+];
 
-  test('should be promise', () => {
-    const p = promiseAll([promise1, promise2, promise3]);
-    expect(p).toBeInstanceOf(Promise);
-  });
-
-  test('array of promises should return one promise', () => {
-    const promiseLength = promiseAll([promise1, promise2, promise3]).then(
-      (value) => {
-        return value;
-      }
-    );
-    expect([promiseLength].length).toEqual(1);
-  });
-
-  test('should return bar', () => {
-    promiseLast([promise1, promise2, promise3, promise4]).then((values) => {
-      expect(values).toEqual('bar');
+describe('Testing promiseAll function', () => {
+  it('should return expected array of values', () => {
+    expect.assertions(1);
+    const expectedSuccessResponse = [3, 42, 'foo'];
+    return promiseAll(mockedArrayOfSuccessPromises).then((res) => {
+      expect(res).toEqual(expectedSuccessResponse);
     });
   });
+
+  it('should return empty array when function parameter is empty array', () => {
+    expect.assertions(1);
+    const expectedResponse: Array<any> = [];
+    return promiseAll([]).then((res) => {
+      expect(res).toEqual(expectedResponse);
+    });
+  });
+
+  it('should return an array of the same length as the input array', () => {
+    expect.assertions(1);
+    return promiseAll(mockedArrayOfSuccessPromises).then((res: any) => {
+      expect(res.length).toBe(mockedArrayOfSuccessPromises.length);
+    });
+  });
+
+  it('should return error when any promise is rejected', () => {
+    expect.assertions(1);
+    return promiseAll([
+      ...mockedArrayOfSuccessPromises,
+      mockedFailPromise,
+    ]).catch((error) => expect(error).toMatch('Promise reject'));
+  });
+
+  // it('should throw error when we pass bad type of props', () => {
+  //   expect.assertions(1);
+  //   const expectedResponse: any[] = [];
+  //   return promiseAll('test').catch((error) =>
+  //     expect(error).toMatch('Function parameter must be array')
+  //   );
+  // });
 });
 
-// new Promise((resolve, reject) => {
-//   reject(new Error("Whoops!"));
-// }).catch(alert); // Error: Whoops!
+describe('Testing promiseLast function', () => {
+  it('should return expected value', () => {
+    expect.assertions(1);
+    const expectedSuccessResponse = 'foo';
+    return promiseLast(mockedArrayOfSuccessPromises).then((res) => {
+      expect(res).toEqual(expectedSuccessResponse);
+    });
+  });
+
+  it('should return empty object when function parameter is empty array', () => {
+    expect.assertions(1);
+    const expectedResponse: object = {};
+    return promiseLast([]).then((res) => {
+      expect(res).toEqual(expectedResponse);
+    });
+  });
+
+  it('should return error when any promise is rejected', () => {
+    expect.assertions(1);
+    return promiseLast([
+      ...mockedArrayOfSuccessPromises,
+      mockedFailPromise,
+    ]).catch((error) => expect(error).toMatch('Promise reject'));
+  });
+});

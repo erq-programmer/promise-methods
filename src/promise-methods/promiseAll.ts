@@ -1,23 +1,23 @@
 const promiseAll = <T>(arrayOfPromise: Array<T>) => {
-  return new Promise((resolve, reject) => {
-    const arrayOfPromiseLength: number = arrayOfPromise.length;
+  if (!(arrayOfPromise instanceof Array))
+    throw new Error('Function parameter must be array');
 
+  const resolvedElements: Array<T> = [];
+  const arrayOfPromiseLength: number = arrayOfPromise.length;
+  let idxCounter = 0;
+
+  return new Promise((resolve, reject) => {
     if (arrayOfPromiseLength === 0) resolve([]);
 
-    let resolvedElements: Array<T> = [];
-
-    let i: number = 0;
-
-    arrayOfPromise.forEach((element) => {
-      const promisedElement = Promise.resolve(element);
-
-      promisedElement
-        .then((response) => {
-          resolvedElements.push(response);
-          i++;
-          if (i === arrayOfPromiseLength) resolve(resolvedElements);
-        })
-        .catch((error) => reject(new Error(error)));
+    arrayOfPromise.forEach(async (element) => {
+      try {
+        const resolvedElement = await Promise.resolve(element);
+        resolvedElements.push(resolvedElement);
+        idxCounter++;
+        if (idxCounter === arrayOfPromiseLength) resolve(resolvedElements);
+      } catch (err) {
+        reject(err);
+      }
     });
   });
 };

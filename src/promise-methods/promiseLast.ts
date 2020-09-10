@@ -1,22 +1,26 @@
 const promiseLast = <T>(arrayOfPromise: Array<T>) => {
+  if (!(arrayOfPromise instanceof Array))
+    throw new Error('Function parameter must be array');
+
+  let counter = 0;
+  let finalResolvedElement;
+  const arrayOfPromiseLength: number = arrayOfPromise.length;
+
   return new Promise((resolve, reject) => {
-    const arrayOfPromiseLength: number = arrayOfPromise.length;
+    if (arrayOfPromiseLength === 0) resolve({});
 
-    if (arrayOfPromiseLength === 0) resolve([]);
+    arrayOfPromise.forEach(async (element) => {
+      try {
+        const resolvedElement = await Promise.resolve(element);
+        counter++;
+        finalResolvedElement = resolvedElement;
 
-    let i: number = 0;
-
-    arrayOfPromise.forEach((element) => {
-      const promisedElement = Promise.resolve(element);
-
-      promisedElement
-        .then((response) => {
-          i++;
-          if (i === arrayOfPromiseLength) {
-            resolve(response);
-          }
-        })
-        .catch((error) => reject(new Error(error)));
+        if (counter === arrayOfPromiseLength) {
+          resolve(finalResolvedElement);
+        }
+      } catch (err) {
+        reject(err);
+      }
     });
   });
 };
