@@ -1,6 +1,7 @@
 # `promise-methods` [![forthebadge](https://forthebadge.com/images/badges/gluten-free.svg)](https://forthebadge.com)
 
-Hello there! :fire:fire
+Hello there! :fire :fire
+
 Two custom methods for promises: promiseAll and promiseLast.
 
 The promiseAll() method takes an array of promises to function parameter, and returns a single Promise that resolves to an array of the results.
@@ -38,10 +39,13 @@ import useSetState from './promise-methods/promiseLast';
 const promise1 = Promise.resolve(3);
 const promise2 = 42;
 const promise3 = new Promise((resolve, reject) => {
-  setTimeout(resolve, 100, 'foo');
+  setTimeout(resolve, 500, 'foo');
+});
+const promise4 = new Promise((resolve, reject) => {
+  setTimeout(resolve, 100, 'bar');
 });
 
-Promise.all([promise1, promise3, promise2]).then((values) => {
+Promise.all([promise1, promise4, promise3, promise2]).then((values) => {
   console.log(values);
 });
 // expected output: "foo"
@@ -53,8 +57,9 @@ Project is: _in-progress_
 
 ## To-do
 
-- [ ] Tests for promiseAll
-- [ ] Tests for promiseLast
+- [x] Tests for promiseAll
+- [x] Tests for promiseLast
+- [ ] Add more tests
 
 ## Contact
 
